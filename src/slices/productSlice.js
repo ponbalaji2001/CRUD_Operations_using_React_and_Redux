@@ -1,13 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    productList: []
+    productList: [],
+    selectedProduct:{}
 };
 
 const productSlice=createSlice({
     name:"product",
     initialState,
     reducers:{
+
+        getProduct:(state, action)=>{
+            const product=state.productList.find((product) => product.id === action.payload.id);
+            state.selectedProduct = product || {};
+        },
+
         addProduct:(state, action)=>{
             const id=Math.random()*100;
             let product={...action.payload,id};
@@ -28,10 +35,9 @@ const productSlice=createSlice({
             );
 
             return state;
-
         }
     }
 })
 
-export const {addProduct,updateProduct,deleteProduct} = productSlice.actions
+export const {getProduct,addProduct,updateProduct,deleteProduct} = productSlice.actions
 export default productSlice.reducer

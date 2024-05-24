@@ -30,7 +30,7 @@ function AddProduct(){
     <Box
       component="form"
       sx={{display:'flex', flexDirection:'column', background:'#f0f0f0', width:'500px',
-        justifyContent:'center', alignItems:'center', padding:'20px', margin: '0 auto 20px',
+        justifyContent:'center', alignItems:'center', padding:'20px', margin: '10px auto 20px',
       }}
       onSubmit={handleSubmit}
       noValidate
