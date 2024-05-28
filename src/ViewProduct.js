@@ -58,15 +58,15 @@ function ViewProduct(){
 
 
   return(
-    <Box sx={{ display: 'flex', gap: '20px',justifyContent: 'center' }}>
+    <Box sx={{ display: 'flex', flexWrap:'wrap', gap: '20px', justifyContent: 'center'}}>
     {Products.map((product) => (
     <>
     { productId === product.id &&
       <Box
       component="form"
       sx={{
-        display: 'flex', flexDirection: 'column', width: '345px',background: 'white', border: '1px solid gray',
-        justifyContent: 'center', alignItems: 'center', padding: '5px', zIndex: 1, position: 'absolute',
+        display: 'flex', flexDirection: 'column',  width: { xs: '90%', sm: '345px' }, background: 'white', border: '1px solid gray',
+        justifyContent: 'center', alignItems: 'center', padding: '5px', zIndex: 1, position: 'absolute', 
       }}
 
       onSubmit={()=>handleUpdate(productId)}
@@ -75,46 +75,46 @@ function ViewProduct(){
     >
         <CloseIcon sx={{marginRight:'-300px', color:'gray'}} onClick={handleClose}/>
         <h2 style={{color:'black', margin:'5px'}}>Update Product</h2>
-         <TextField sx={{width:'300px', margin:'5px'}}
+         <TextField sx={{width: '100%', maxWidth: '300px', margin: '5px' }}
           id="name"
           label="Name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <TextField sx={{width:'300px', margin:'5px'}}
+        <TextField sx={{width: '100%', maxWidth: '300px', margin: '5px' }}
           id="imageurl"
           label="Image URL"
           type="text"
           value={imageURL}
           onChange={(e) => setImageURL(e.target.value)}
         />
-         <TextField sx={{width:'300px', margin:'5px'}}
+         <TextField sx={{width: '100%', maxWidth: '300px', margin: '5px' }}
           id="description"
           label="Description"
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-         <TextField sx={{width:'300px', margin:'5px'}}
+         <TextField sx={{width: '100%', maxWidth: '300px', margin: '5px' }}
           id="price"
           label="Price"
           type="text"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
-         <TextField sx={{width:'300px', margin:'5px'}}
+         <TextField sx={{width: '100%', maxWidth: '300px',  margin: '5px' }}
           id="rating"
           label="Rating"
           type="text"
           value={rating}
           onChange={(e) => setRating(e.target.value)}
         />
-        <Button type="submit" variant="contained" color="primary" sx={{margin:'5px'}}>
+        <Button type="submit" variant="contained" color="primary" sx={{ margin:'5px'}}>
         update
       </Button>
     </Box>}
-       <Card  key={product.id} sx={{ width: 345}}>
+       <Card  key={product.id} sx={{ minWidth: 280, maxWidth: 300, width: '100%', margin: '10px', padding: '0px' }}>
        <CardHeader
          action={
            <Box>

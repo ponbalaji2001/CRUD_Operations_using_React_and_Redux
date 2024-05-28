@@ -29,43 +29,43 @@ function AddProduct(){
   return(
     <Box
       component="form"
-      sx={{display:'flex', flexDirection:'column', background:'#f0f0f0', width:'500px',
-        justifyContent:'center', alignItems:'center', padding:'20px', margin: '10px auto 20px',
+      sx={{display:'flex', flexDirection:'column',  width: { xs: '90%', sm: '400px' }, boxShadow:'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+        justifyContent:'center', alignItems:'center', padding:'20px', margin: '10px auto 20px', borderRadius:'10px'
       }}
       onSubmit={handleSubmit}
       noValidate
       autoComplete="off"
     >
         <h2 style={{color:'black'}}>Add Product</h2>
-         <TextField sx={{width:'500px', margin:'10px'}}
+         <TextField sx={{width:'100%', maxWidth: '500px', margin: '10px'}}
           id="name"
           label="Name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <TextField sx={{width:'500px', margin:'10px'}}
+        <TextField sx={{width: '100%', maxWidth: '500px', margin: '10px'}}
           id="imageurl"
           label="Image URL"
           type="text"
           value={imageURL}
           onChange={(e) => setImageURL(e.target.value)}
         />
-         <TextField sx={{width:'500px', margin:'10px'}}
+         <TextField sx={{width: '100%', maxWidth: '500px', margin: '10px'}}
           id="description"
           label="Description"
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-         <TextField sx={{width:'500px', margin:'10px'}}
+         <TextField sx={{width: '100%', maxWidth: '500px', margin: '10px'}}
           id="price"
           label="Price"
           type="text"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
-         <TextField sx={{width:'500px', margin:'10px'}}
+         <TextField sx={{width: '100%', maxWidth: '500px', margin: '10px'}}
           id="rating"
           label="Rating"
           type="text"
