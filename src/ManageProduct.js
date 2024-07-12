@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Box, TextField, Button, Drawer, Divider, styled, useTheme } from '@mui/material';
+import { Box, TextField, Button, Drawer, Divider, styled, useTheme, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import StarIcon from '@mui/icons-material/Star';
 import { useSelector, useDispatch } from "react-redux"
 import { addProduct, updateProduct, getProduct , deleteProduct} from './slices/productSlice';
 import { useState, useEffect } from 'react';
@@ -29,7 +31,6 @@ function ManageProduct({open, handleDrawerOpen, handleDrawerClose, productId, ha
     setPrice('');
     setRating('');
     setDescription('');
-    handleProductId('');
   }
 
   useEffect(() => {
@@ -41,14 +42,18 @@ function ManageProduct({open, handleDrawerOpen, handleDrawerClose, productId, ha
     else if(option==='Delete' && productId){
       dispatch(deleteProduct({ id:productId}));
       resetValues();
+      handleProductId('');
       handleProductOption('');
+    }
+    else if(!option && !productId){
+      resetValues();
     }
   },[option, productId, dispatch, handleProductId, handleProductOption, resetValues])
 
   
   // Update Form Values
   useEffect(() => {
-    if (selectedProduct && selectedProduct.name && option==='Update') {
+    if (selectedProduct && selectedProduct.name && (option==='Update' || option==='Get')) {
       setName(selectedProduct.name);
       setImageURL(selectedProduct.imageURL);
       setPrice(selectedProduct.price);
@@ -62,6 +67,7 @@ function ManageProduct({open, handleDrawerOpen, handleDrawerClose, productId, ha
     dispatch(updateProduct({id:productId,name, imageURL, description, price, rating}));
     handleDrawerClose();
     resetValues();
+    handleProductId('');
     handleProductOption('');
   };
 
@@ -89,6 +95,18 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
+const ProductImage = styled('img')({
+  height: '200px',
+  width: '280px',
+  objectFit: 'cover',
+  objectPosition: 'center',
+  paddingBottom: '35px',
+  transition: 'transform 0.3s ease', 
+  '&:hover': {
+    transform: 'scale(1.05)',
+  },
+});
+
  
   return(
   <Box sx={{ height:'100%' }}>
@@ -98,14 +116,19 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     </Button>
   }
   { productId && 
-    <Button type="submit" variant="contained" color="primary" onClick={()=> handleProductOption('Delete') } sx={{ ...(open && { display: 'none'}), float:'right', margin:'10px',  zIndex:'99', overflow:'hidden' }}>
+    <Button type="submit" variant="contained" color="primary" onClick={()=> handleProductOption('Delete') } sx={{ ...(open && { display: 'none'}), float:'right', margin:'10px 5px',  zIndex:'99', overflow:'hidden' }}>
       <DeleteIcon sx={{fontSize:'22px', padding:'1px' }} />
     </Button> 
   }
   { productId && 
-    <Button type="submit" variant="contained" color="primary" onClick={()=>{handleDrawerOpen(); handleProductOption('Update')}} sx={{ ...(open && { display: 'none'}), float:'right', margin:'10px',  zIndex:'99', overflow:'hidden' }}>
+    <Button type="submit" variant="contained" color="primary" onClick={()=>{handleDrawerOpen(); handleProductOption('Update')}} sx={{ ...(open && { display: 'none'}), float:'right', margin:'10px 5px',  zIndex:'99', overflow:'hidden' }}>
       <EditIcon sx={{fontSize:'23px', padding:'1px' }} />
     </Button>
+  }
+  { productId && 
+    <Button type="submit" variant="contained" color="primary" onClick={()=> {handleDrawerOpen(); handleProductOption('Get')}} sx={{ ...(open && { display: 'none'}), float:'right', margin:'10px 5px',  zIndex:'99', overflow:'hidden' }}>
+      <FullscreenIcon sx={{fontSize:'26px' }} />
+    </Button> 
   }
   <Drawer variant="persistent" anchor="right" open={open}
     sx={{ width:'auto', flexShrink: 0,
@@ -120,7 +143,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
       </IconButton>
     </DrawerHeader>
     <Divider />
-    <Box
+    { (option==='Add' || option==='Update') &&
+    (<Box
       component="form"
       sx={{display:'flex', flexDirection:'column',  width: { xs: '90%', sm: '400px' }, boxShadow:'rgba(100, 100, 111, 0.2) 4px 7px 29px 0px',
         justifyContent:'center', alignItems:'center', padding:'30px', borderRadius:'10px', margin:'20px'
@@ -168,7 +192,27 @@ const DrawerHeader = styled('div')(({ theme }) => ({
       <Button type="submit" variant="contained" color="primary" sx={{marginTop:'10px'}}>
         Submit
       </Button>
-    </Box>
+      </Box>) }
+      { option==='Get' &&
+       <Box  sx={{display:'flex', flexDirection:'column',  width: { xs: '90%', sm: '400px' }, boxShadow:'rgba(100, 100, 111, 0.2) 4px 7px 29px 0px',
+       justifyContent:'flex-start', alignItems:'center', padding:'30px', borderRadius:'10px', margin:'20px'
+      }}>
+        <ProductImage src={imageURL} alt="product image" />
+        <Typography gutterBottom variant="h5" component="div" sx={{fontSize:'20px', fontWeight:'550',  paddingBottom:'10px'}}>
+          {name}
+        </Typography>
+        <Typography variant="body2" color="text.primary" sx={{ fontSize:'14px', paddingLeft:'40px', paddingRight:'40px', paddingBottom:'10px', textAlign:'justify' }}> 
+          {description}
+        </Typography>
+        <Typography gutterBottom variant="h5" component="div" sx={{ fontSize:'18px', fontWeight:'550', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <p>Price:&nbsp;&nbsp;</p>
+          <Box sx={{ color:'#FFBF4D', fontSize: '20px'}}>&#36;</Box>&nbsp;{price}
+        </Typography>
+        <Typography gutterBottom variant="h6" component="div" sx={{ fontSize:'18px', fontWeight:'550', display: 'flex', alignItems: 'center', justifyContent: 'center', margin:"-10%", paddingBottom:'20px'}}>
+          <p>Rating:&nbsp;&nbsp;</p>
+          <StarIcon sx={{ fontSize: '22px', color:'#ffd250', marginTop:'-2px' }}/>&nbsp;{rating}
+        </Typography>
+      </Box> }
   </Drawer>
   </Box>
   );

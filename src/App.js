@@ -17,7 +17,6 @@ function App() {
 
   const handleDrawerClose = () => {
     setIsDrawerOpen(false);
-    handleProductId('');
     handleProductOption('');
   };
 
@@ -35,7 +34,7 @@ function App() {
       <div className="App">
         <ManageProduct open={isDrawerOpen} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} option={option} 
           handleProductOption={handleProductOption} handleProductId={handleProductId} productId={productId} />
-        <DisplayProducts open={isDrawerOpen} productId={productId} handleProductId={handleProductId} />
+        <DisplayProducts open={isDrawerOpen} productId={productId} handleProductId={handleProductId} handleDrawerClose={handleDrawerClose} />
       </div>
     </Provider>
     
